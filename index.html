@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>String to JSON</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #121212;
+            color: #f1f1f1;
+            margin: 20px;
+        }
+        h1, h2 {
+            color: #00d7ff;
+        }
+        textarea, pre {
+            width: 100%;
+            background-color: #1e1e1e;
+            color: #f1f1f1;
+            border: 1px solid #333;
+            border-radius: 4px;
+            padding: 10px;
+            box-sizing: border-box;
+        }
+        textarea {
+            height: 100px;
+        }
+        pre {
+            height: auto;
+            min-height: 100px;
+            white-space: pre-wrap;
+        }
+        button {
+            background-color: #00d7ff;
+            color: #121212;
+            border: none;
+            padding: 10px 20px;
+            font-size: 16px;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #00a0c7;
+        }
+        .button-container {
+            display: flex;
+            gap: 10px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Query String to JSON Parser</h1>
+    <textarea id="queryInput" placeholder="Put Query String"></textarea><br><br>
+    <div class="button-container">
+        <button onclick="parseQueryString()">Convert to JSON</button>
+        <button onclick="copyToClipboard()">Copy Output</button>
+    </div>
+    <h2>JSON Output</h2>
+    <pre id="jsonOutput"></pre>
+    <script>
+        function parseQueryString() {
+            let queryString = document.getElementById("queryInput").value;
+            let decodedString = decodeURIComponent(queryString);
+            let queryParams = new URLSearchParams(decodedString);
+            let data = {};
+            
+            for (let [key, value] of queryParams.entries()) {
+                data[key] = value;
+            }
+
+            let jsonData = JSON.stringify(data, null, 4);
+            document.getElementById("jsonOutput").textContent = jsonData;
+        }
+
+        function copyToClipboard() {
+            let jsonOutput = document.getElementById("jsonOutput").textContent;
+            navigator.clipboard.writeText(jsonOutput).then(function() {
+                alert('JSON Output copied to clipboard!');
+            }, function(err) {
+                alert('Failed to copy text: ', err);
+            });
+        }
+    </script>
+</body>
+</html>
